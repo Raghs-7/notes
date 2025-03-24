@@ -74,8 +74,6 @@ void TranversalTechniques(){
     // Pre-order Tranversal(root, left, right)   |  Pre means root is pre 
     // Post-order Tranversal(left, right, root)  |  post means root is post 
 
-
-
 }
 
 

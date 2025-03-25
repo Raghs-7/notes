@@ -1,0 +1,2 @@
+Welcome to file two.
+This document explains various concepts and provides general commentary.

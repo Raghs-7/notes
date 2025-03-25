@@ -1,6 +1,16 @@
 #include<iostream>
 using namespace std;
 
+struct Node{
+    int data;
+    struct Node* left;
+    struct Node* right;
+    Node( int val){
+        data = val;
+        left = right = NULL;
+    };
+};
+
 
 void TypeofBinaryTree(){
     // if a tree is binary then it has only two childrens
@@ -70,16 +80,45 @@ void RepresentationOfBinaryTrees(){
 
 void TranversalTechniques(){
 
+    // 1) DFS --> depth wise    
     // Inorder Tranversal(left, root, right)     |  In means root is in 
     // Pre-order Tranversal(root, left, right)   |  Pre means root is pre 
     // Post-order Tranversal(left, right, root)  |  post means root is post 
 
+    // 2) BFS --> breath wise 
+}
+
+void PreOrderTraversal(struct Node* head){ // (root, left, right)
+    if (head==NULL) return;
+    cout << head->data << " ";
+
+    PreOrderTraversal(head->left);
+    PreOrderTraversal(head->right);
+}
+
+void InOrderTraversal(struct Node* head) {
+    if (head == NULL) return;
+
+    InOrderTraversal(head->left);  // Traverse left subtree
+    cout << head->data << " ";      // Visit root
+    InOrderTraversal(head->right);  // Traverse right subtree
 }
 
 
+void PostOrderTriversal(struct Node* head){
+    if (head == NULL) return;
+
+    PostOrderTriversal(head->left);
+    PostOrderTriversal(head->right);
+    cout << head->data << " ";
+}
+
+
+void BreathWiseTriversal(){
+    // we will use Quese and Vector<vector<int>>
+}
 
 int main(){
-
 
     return 0;
 }

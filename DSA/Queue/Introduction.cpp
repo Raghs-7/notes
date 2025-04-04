@@ -1,7 +1,5 @@
 #include<iostream>
 #include<stdlib.h>
-#include<stack>
-#include<queue>
 using namespace std;
 
 class ListNode {

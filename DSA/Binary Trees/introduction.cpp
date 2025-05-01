@@ -279,7 +279,12 @@ vector<vector<int>> levelOrderTriversal( TreeNode* head){ // level order trivers
     // Space Complexity = O(n)
 }
 
-
+vector<int> iterative_postorder_traversal(){ // interative and using one stack only 
+    // left right root   
+    // with recurssion it will do left left left then right right right then do the center 
+    
+    
+}
 
 
 int main(){

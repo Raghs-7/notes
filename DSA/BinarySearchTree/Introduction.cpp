@@ -120,8 +120,44 @@ BinaryTree* InsertNode(BinaryTree* head, int key){
     }
 }
 
-BinaryTree* DeletionNode(BinaryTree* head, int key){
-    //
+BinaryTree* helper(BinaryTree* root1){
+    if (root1->left==nullptr) return root1->right;
+    else if (root1->right==nullptr) return root1->left;
+    BinaryTree* rightChild = root1->right;
+    BinaryTree* LastRight = root1->left;
+    while (LastRight->right){
+        LastRight = LastRight->right;
+    }
+    LastRight->right = rightChild;
+    return root1->left;
+}
+
+BinaryTree* DeletionNode(BinaryTree* root, int key){
+    // Time complexity --> O( height of the BST )
+    // Space Complexity --> O( 1 )
+
+    if (root == NULL) return NULL;
+    if (root->data == key) return helper(root);
+    BinaryTree* dummy = root;
+    while (root){
+        if (root->data > key){
+            if (root->left != NULL && root->left->data == key){
+                root->left = helper(root->left);
+                break;
+            }
+            else {
+                root = root->left;
+            }
+        }
+        else {
+            if (root->right != NULL && root->right->data == key){
+                root->right = helper(root->right);
+                break;
+            }
+            else  root = root->right;
+        }
+    }
+    return dummy;
 }
 
 int main(){

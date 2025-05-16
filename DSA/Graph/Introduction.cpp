@@ -84,13 +84,14 @@ vector<int> explainBFS(int n, vector<int> adj[]){ // n--> no. of nodes
     //    2     6     
     //  3  4  7  8
     //      5
-    // let say for BFS our initial node is 6 then our bfs trivesal is 6 | 1 7 8 | 2 5 | 3 4
+    // let say for BFS our starting node is 6 then our bfs trivesal is 6 | 1 7 8 | 2 5 | 3 4
     
     //          1
     //     2        6
     //  3    4    7   9 
     //     5        8
     // above graph is stored like
+    // adjacency list
     // 0 --> {}
     // 1 --> {2, 6}
     // 2 --> {1, 3. 4}
@@ -129,10 +130,29 @@ vector<int> explainBFS(int n, vector<int> adj[]){ // n--> no. of nodes
     return bfs;
 }
 
-void explainDFS(){
+void dfs(int node, vector<int> adj[], int vis[], vector<int> &result){
+    vis[node] = 1;
+    result.push_back(node);
+    for (int i=0; i<adj[node].size(); i++){
+        if (!vis[adj[node][i]]){
+            dfs(adj[node][i], adj, vis, result);
+        }
+    }
+}
 
-
-
+void explainDFS(int n, vector<int> adj[]){
+    // depth first search 
+    //          1
+    //      2       3    4
+    //   5     6    7    8
+    // dfs --> 1 2 5 6 3 7 4 8
+    int vis[n] = {0};
+    int start = 0;
+    vector<int> result;
+    dfs(start, adj, vis, result);
+    // Space complexity --> O(3*n)
+    // Time complexity --> O(n) + O(2E)
+    // 2E is for the edges and n is for the nodes
     return ;
 }
 

@@ -77,11 +77,11 @@ Node* delete_kth_node(Node* head, int k){
 	}
 	else {
 		back->next = nxt;
-		nxt->prev = back->next;
+		nxt->prev = back;
 		temp->next = nullptr;
 		temp->prev = nullptr;
+		delete temp;
 	}
-
 	return head;
 }
 

@@ -8,6 +8,7 @@ public:
 	Node(int a){
 		val = a;
 		next = nullptr;
+	}
 };
 
 bool LoopDetection(Node* head){
@@ -23,6 +24,7 @@ bool LoopDetection(Node* head){
 	}
 	return false;
 }
+
 
 int lengthOfLoop(Node* head){
 	Node* slow = head;
@@ -70,7 +72,7 @@ Node* starting_cycle_Node(Node* head){
 	Node* fast = head;
 	while (fast && fast->next){
 		slow = slow->next;
-		fast = fast->next->fast;
+		fast = fast->next->next;
 		if (slow==fast ){
 			slow = head;
 			while (slow!=head){
@@ -91,6 +93,7 @@ Node* reverse(Node* head){
 	// triversal approach
 	Node* prev = nullptr;
 	Node* front;
+	Node* temp = head;
 	while (temp){
 		front = temp->next;
 		temp->next = prev;

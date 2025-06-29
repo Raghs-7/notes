@@ -152,8 +152,14 @@ void explainDFS(int n, vector<int> adj[]){
     dfs(start, adj, vis, result);
     // Space complexity --> O(3*n)
     // Time complexity --> O(n) + O(2E)
-    // 2E is for the edges and n is for the nodes
+
     return ;
+}
+
+int numberOfProvices(int n, vector<int> adj[]){
+
+
+    
 }
 
 

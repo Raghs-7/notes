@@ -1,5 +1,6 @@
 #include<iostream>
 #include<stdlib.h>
+#include<stack>
 using namespace std;
 
 class ListNode {
@@ -556,6 +557,39 @@ void ExplainQueue(){
 
     return ;
 }
+
+class min_stack{
+private:
+    stack<int> st;
+    int m;
+public:
+    
+    void push(int val){
+        if (st.empty()){
+            m = val;
+            st.push(val);
+        }
+        else {
+            if (val<m){
+                m = val;
+                st.push(2*val-m);
+            }
+            else {
+                st.push(val);
+            }
+        }
+    }
+
+    void pop(){
+        if (!st.empty()) {
+            if (st.top()<m){
+                m = 2*m-st.top();
+                st.pop();
+            }
+            st.pop();
+        }
+    }
+};
 
 int main(){
 

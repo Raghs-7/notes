@@ -1,7 +1,9 @@
+#include<bits/stdc++.h>
 #include<iostream>
 #include<vector>
 // #include<pairs>
 #include<queue>
+#include<set>
 using namespace std;
 
 // graph is --> node and edges 
@@ -14,7 +16,7 @@ using namespace std;
 // path --> can contain a lot of vertecies and nodes and each of them are reachable
 // a node cannot appear twise in a path 
 
-// Degree of a graph --> for an undirected graph is the number of edges that are attached to it is know as it's degree
+// Degrees in a graph --> for an undirected graph is the number of edges that are attached to it is know as it's degree
 // total degree of graph == 2 * (no. of edges)   { stands for undirected graph }
 // for Directed graph 
 // Outdegree --> number of outgoing edges called outdegree
@@ -158,12 +160,275 @@ void explainDFS(int n, vector<int> adj[]){
 
 int numberOfProvices(int n, vector<int> adj[]){
 
+    vector<int> vis(n, 0);
+    int result = 0;
 
+    for (int i=0; i<n; i++){
+        if (vis[i]==0){
+            // dfs(i, adj, vis);
+            result++;
+        }
+    }
+
+    return result;
     
 }
 
 
+
+int NumberOfConnnectedComponents(vector<vector<int>> &grid){
+    // matrix contain 0 and 1 only and 0 means water and 1 means land and all 8 type of connectivity is allowed 
+    // now tell us how many islands ...
+
+    int n = grid.size();
+    int m = grid[0].size();
+
+    for (int i=0; i<n; i++){
+        for (int j=0; j<m; j++){
+            
+        }
+    }
+}
+
+// ==================== CYCLE DETECTION CLASS ====================
+
+// intution for undirected graph is --> if you find a node neighbor already visited and not the parent then it's a cycle
+// for directed graph --> 
+class CycleDetection {
+private:
+    int numNodes;
+    vector<int>* adjList;
+    
+    // Helper function for undirected graph DFS
+    bool detectCycleDFSUndirected(int node, int parent, vector<int>& vis){
+        vis[node] = 1;
+        
+        for (int i = 0; i < adjList[node].size(); i++){
+            int neighbor = adjList[node][i];
+            
+            if (!vis[neighbor]){
+                if (detectCycleDFSUndirected(neighbor, node, vis)){
+                    return true;
+                }
+            }
+            else if (neighbor != parent){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    // Helper function for directed graph DFS using color marking
+    // WHITE = 0 (not visited), GRAY = 1 (being processed), BLACK = 2 (completed)
+    bool detectCycleDFSDirected(int node, vector<int>& color){
+        color[node] = 1;  // Mark as GRAY (currently being processed)
+        
+        for (int i = 0; i < adjList[node].size(); i++){
+            int neighbor = adjList[node][i];
+            
+            if (color[neighbor] == 0){
+                // WHITE node: not yet visited
+                if (detectCycleDFSDirected(neighbor, color)){
+                    return true;
+                }
+            }
+            else if (color[neighbor] == 1){
+                // GRAY node: back edge found, cycle detected
+                return true;
+            }
+        }
+        
+        color[node] = 2;  // Mark as BLACK (processing complete)
+        return false;
+    }
+
+public:
+    // Constructor
+    CycleDetection(int n, vector<int>* adj) : numNodes(n), adjList(adj) {}
+    
+    // ============= UNDIRECTED GRAPH CYCLE DETECTION =============
+    
+    // DFS approach for undirected graph
+    bool hasCycleUndirectedDFS(){
+        vector<int> vis(numNodes, 0);
+        
+        for (int i = 0; i < numNodes; i++){
+            if (!vis[i]){
+                if (detectCycleDFSUndirected(i, -1, vis)){
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    // BFS approach for undirected graph
+    bool hasCycleUndirectedBFS(){
+        vector<int> vis(numNodes, 0);
+        vector<int> parent(numNodes, -1);
+        
+        for (int i = 0; i < numNodes; i++){
+            if (!vis[i]){
+                queue<int> q;
+                q.push(i);
+                vis[i] = 1;
+                
+                while (!q.empty()){
+                    int node = q.front();
+                    q.pop();
+                    
+                    for (int j = 0; j < adjList[node].size(); j++){
+                        int neighbor = adjList[node][j];
+                        
+                        if (!vis[neighbor]){
+                            vis[neighbor] = 1;
+                            parent[neighbor] = node;
+                            q.push(neighbor);
+                        }
+                        else if (neighbor != parent[node]){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    // ============= DIRECTED GRAPH CYCLE DETECTION =============
+    
+    // DFS approach for directed graph using color marking
+    bool hasCycleDirectedGraph(){
+        // WHITE = 0, GRAY = 1, BLACK = 2
+        vector<int> color(numNodes, 0);
+        
+        for (int i = 0; i < numNodes; i++){
+            if (color[i] == 0){
+                if (detectCycleDFSDirected(i, color)){
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    // ============= UTILITY FUNCTIONS =============
+    
+    void printResult(string graphType, string method, bool hasCycle){
+        cout << "Graph Type: " << graphType << endl;
+        cout << "Method: " << method << endl;
+        cout << "Cycle Present: " << (hasCycle ? "YES" : "NO") << endl;
+        cout << "----------------------------" << endl;
+    }
+};
+
+
+void TopologicalSort(vector<vector<int>>& adjList){
+    // only possible in DAG (Directed Acyclic Graph)
+    // topological sort --> linear ordering such that for every directed edge u -> v, vertex u comes before vertex v in the ordering. 
+    
+
+    // My approach
+    // if we add like bfs order then it's correct but if we start from the root node
+    // so we kinda store the bfs order in stack and when new node comes 
+    // It has two possibility either not the parent of curr node or other disconnected graph node
+    // so either way we add it into the stack and ans is reverse of stack
+
+
+    // basically we do dfs and when the dfs of node is node put it in the stack and if child node is already visited skip it 
+
+    // khan's algorithm 
+
+    // Idea is to make a Indegree array
+    // insert node which have 0 degree
+    // then remove that node (decrease the degree of it's neighbour)
+    // if any neighbour's degree become  zero insert into the queue && store the node in result
+    
+
+}
+
+// Dijkstra's algorithm using priority queue (min-heap)
+// also use sets because set stores element in sorted order (top element is the smallest one )
+// advantage is when we get a node which reach from 10 dis from a path and we get even shorter dis then there's no point in storing that 10 dis node in set so we remove it 
+void Dijkstra(int start, vector<vector<pair<int, int>>>& adjList, vector<int>& dist){
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    dist[start] = 0;
+    pq.push({0, start});
+
+    while (!pq.empty()){
+        int u = pq.top().second;
+        pq.pop();
+
+        for (auto& edge : adjList[u]){
+            int v = edge.first;
+            int weight = edge.second;
+
+            if (dist[u] + weight < dist[v]){
+                dist[v] = dist[u] + weight;
+                pq.push({dist[v], v});
+            }
+        }
+    }
+
+    set<pair<int, int>> s;
+    s.insert({0, start});
+
+    dist[start] = 0;
+    while(!s.empty()){
+        auto it = *(s.begin());
+        int node = it.second;
+        int dis = it.first;
+        s.erase(it);
+
+        for (auto it : adjList[node]){
+            int AdjNode = it.first;
+            int weight = it.second;
+
+            if (dist[node] + weight < dist[AdjNode]){
+                if (dist[AdjNode] != INT_MAX){
+                    s.erase({dist[AdjNode], AdjNode});
+                }
+                dist[AdjNode] = dist[node] + weight;
+                s.insert({dist[AdjNode], AdjNode});
+            }
+        }
+    }
+
+    // time complexity --> )(E log V ) where E is the number of edges and V is the number of vertices
+    // why E log V ? 
+}
+
+
 int main(){
+    
+    // Example usage:
+    // For undirected graph:
+    // int n = 5;
+    // vector<int> adj[n];
+    // adj[0] = {1, 2};
+    // adj[1] = {0, 3};
+    // adj[2] = {0, 4};
+    // adj[3] = {1};
+    // adj[4] = {2};
+    
+    // CycleDetection cd(n, adj);
+    // cout << "Undirected Graph - DFS: " << (cd.hasCycleUndirectedDFS() ? "Cycle Found" : "No Cycle") << endl;
+    // cout << "Undirected Graph - BFS: " << (cd.hasCycleUndirectedBFS() ? "Cycle Found" : "No Cycle") << endl;
+    
+    // For directed graph:
+    // int m = 4;
+    // vector<int> dirAdj[m];
+    // dirAdj[0] = {1};
+    // dirAdj[1] = {2};
+    // dirAdj[2] = {3};
+    // dirAdj[3] = {1};  // Back edge: creates cycle
+    
+    // CycleDetection cdDir(m, dirAdj);
+    // cout << "Directed Graph: " << (cdDir.hasCycleDirectedGraph() ? "Cycle Found" : "No Cycle") << endl;
 
     return 0;
 }
